@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: blue
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: green
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: blue-green-router
+  namespace: kube-system
+spec:
+  entryPoints:
+    - web
+  routes:
+    - match: Host(`test.test`) && PathPrefix(`/`)
+      kind: Rule
+      services:
+        - name: blue
+          namespace: blue
+          port: 80
+          weight: 100
+        - name: green
+          namespace: green
+          port: 80
+          weight: 0

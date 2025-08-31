@@ -1,0 +1,26 @@
+name: Bootstrap blue/green
+
+on:
+  workflow_dispatch: {}
+
+jobs:
+  bootstrap-blue-green:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+        with:
+          version: "v1.30.0"
+
+      - name: Configure kubeconfig from secret
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${{ secrets.KUBECONFIG }}" > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+
+      - name: Bootstrap blue/green 
+        run: kubectl apply -f manifest.yaml
