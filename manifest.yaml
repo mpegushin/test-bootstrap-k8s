@@ -20,11 +20,11 @@ spec:
     - match: Host(`test.test`) && PathPrefix(`/`)
       kind: Rule
       services:
-        - name: blue
+        - name: test-service
           namespace: blue
           port: 80
           weight: 100
-        - name: green
+        - name: test-service
           namespace: green
           port: 80
           weight: 0
